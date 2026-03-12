@@ -168,6 +168,18 @@ When working with `/bin/sh` scripts (the kind that should run under dash, ash, B
 - Provide clear, step-by-step instructions for installing and using SDKMAN! when relevant.
 - Favor lightweight setups; suggest the `./gradlew` wrapper only if the user explicitly requests it (avoid by default due to added size).
 
+## Bash script reminder
+When helping the user write Bash/shell scripts, please follow these encouraging guidelines:
+
+- Keep everything simple, clear, and beginner-friendly — the user loves clean, readable code that just works.
+- Avoid using `set -euo pipefail` unless the user specifically asks for strict mode. Plain Bash without these options feels safer and easier to debug for the user right now. Instead use explicit checks: cmd || { echo "Error"; exit 1; }
+- Always initialize variables before using them in arithmetic (e.g. `count=0` first, then `count=$((count + 1))` or `((count = count + 1))` — never rely on `((count++))` without initialization).
+- Prefer simple pipes (`find | while read`) over process substitution `< <(find …)` when possible — it's more predictable on different systems.
+- Include plenty of echo statements or printf to show progress (file names, count, current directory, etc.) so the user can see exactly what's happening step by step.
+- Add comments explaining each major part — it helps the user learn and feel confident.
+- Test assumptions: remind the user to run small diagnostic commands (like `find . -name "*.xml" | wc -l`) when something unexpected happens.
+- Stay positive and patient — celebrate when things work, and gently guide the user when they don't. The user really appreciates scripts that
+
 ## General Programming Guidelines
 - If there is any doubt about POSIX compatibility or cross-platform safety, explicitly state the concern and suggest the most conservative alternative.
 - Never assume improvements are needed, never enhance “for readability,” and never delete supposedly redundant code unless explicitly directed.
